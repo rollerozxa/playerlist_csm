@@ -3,7 +3,7 @@ local huds_store = {}
 
 local list_shown = false
 
-minetest.register_globalstep(function(dtime)
+local function playerlist()
 	local sneak_held = minetest.localplayer:get_control().sneak
 
 	if sneak_held and not list_shown then
@@ -39,5 +39,14 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		list_shown = false
+	end
+end
+
+local init = 0
+minetest.register_globalstep(function(dtime)
+	if init > 0.1 then
+		playerlist()
+	else
+		init = init + dtime
 	end
 end)
