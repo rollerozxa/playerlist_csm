@@ -7,27 +7,27 @@ local function playerlist()
 	local sneak_held = minetest.localplayer:get_control().sneak
 
 	if sneak_held and not list_shown then
-		local huds = {minetest.localplayer:hud_add({
+		local huds = {minetest.localplayer:hud_add{
 			hud_elem_type = "image",
-			position = {x = 0.5, y = 0},
-			offset = {x = 0, y = 20},
-			text = "^[resize:8x8^[colorize:#111:255",
+			position = {x = 0.5, y = 0.1},
+			offset = {x = 0, y = 30},
+			text = "^[resize:8x8^[colorize:#222:255^[opacity:200",
 			alignment = {x = 0, y = 1},
-			scale = {x = 40, y = #minetest.get_player_names() * 4},
+			scale = {x = 40, y = #minetest.get_player_names() * 2.525},
 			number = 0xFFFFFF,
-		})}
+		}}
 
 		for i, name in ipairs(minetest.get_player_names()) do
 			if i ~= 1 then -- for some reason the first name in the list is a duplicate of the current player
-				table.insert(huds, minetest.localplayer:hud_add({
+				table.insert(huds, minetest.localplayer:hud_add{
 					hud_elem_type = "text",
-					position = {x = 0.5, y = 0},
-					offset = {x = 0, y = 23 + (i - 2) * 18},
+					position = {x = 0.5, y = 0.1},
+					offset = {x = 0, y = 40 + (i - 2) * 20},
 					text = name,
 					alignment = {x = 0, y = 1},
 					scale = {x = 100, y = 100},
-					number = color or 0xFFFFFF,
-				}))
+					number = 0xFFFFFF,
+				})
 			end
 		end
 		huds_store = huds
@@ -42,11 +42,8 @@ local function playerlist()
 	end
 end
 
-local init = 0
 minetest.register_globalstep(function(dtime)
-	if init > 0.1 then
+	if minetest.localplayer then
 		playerlist()
-	else
-		init = init + dtime
 	end
 end)
